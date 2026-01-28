@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dimsum Santri - Pemesanan Online Profesional</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+        <link
+      href="bootstrap-5.3.8-dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+    <!-- Ganti YOUR_API_KEY dengan key Google Maps Anda -->
+    <style>
+      body {
+        background-color: #ffffff;
+      }
+      .hero {
+        background-image: url(foto/image\ copy.png);
+        background-size: cover;
+        background-position: center;
+        overflow: hidden;
+        min-height: 100vh;
+      }
+
+      .hero .container {
+        margin-top: 20%;
+        color: rgb(255, 255, 255);
+        position: relative;
+      }
+
+      .menu-item {
+        transition: transform 0.3s;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .menu-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      #cart {
+        position: fixed;
+        top: 95px;
+        right: 20px;
+        width: 320px;
+        z-index: 1000;
+        display: none;
+      }
+      .modal-body {
+        max-height: 70vh;
+        overflow-y: auto;
+      }
+      footer {
+        background-color: #343a40;
+        color: rgb(255, 255, 255);
+        padding: 40px 0;
+      }
+        .shake {
+    animation: shake 0.5s;
+  }
+
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+  }
+
+  .logo{
+    width: 75px;
+    height: 75px;
+    margin-right: 10px;
+    padding: 5px 5px 5px 5px;
+    transition: all 0.5s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  }
+
+  .logo:hover {
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.25);
+  }
+
+  .caption-hidden {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+      <div class="container">
+        <a href="#"><img src="foto/WhatsApp Image 2026-01-14 at 8.15.25 AM.jpeg" class="logo navbar-toggler-icon" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"></a>
+        <a class="navbar-brand fw-bold" href="#">Dimsum Santri</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#home">Beranda</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="#menu">Food</a></li>
+            <li class="nav-item"><a class="nav-link" href="#minuman">Drink</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">Tentang</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contact">Kontak</a>
+            </li>
+          </ul>
+          <button class="btn btn-outline-light" onclick="toggleCart()">
+            Keranjang (<span id="cart-count">0</span>)
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+      <div class="container text-center">
+        <h1 class="display-4 fw-bold" style="text-align: center;">Dimsum Santri</h1>
+        <a href="#menu" class="btn btn-light btn-lg">Lihat Menu</a>
+      </div>
+    </section>
+
+    <!-- Menu -->
+<!-- Menu Food -->
+<section id="menu" class="py-5">
+  <div class="container">
+    <h2 class="text-center mb-5">Menu Dimsum Kami</h2>
+    <div class="row" id="menu-items">
+      <!-- Contoh item -->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card menu-item h-100">
+          <img
+            src="foto/WhatsApp Image 2026-01-21 at 7.53.54 AM.jpeg"
+            class="card-img-top"
+            alt="Dimsum Ayam"
+            onclick="toggleCaption(this)"
+          />
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Dimsum Original</h5>
+            <p class="card-text caption-hidden">
+              Dimsum ayam dengan tekstur lembut dan isian daging ayam pilihan, dibumbui rempah khas yang gurih dan nikmat. 
+              Cocok dinikmati kapan saja, baik sebagai camilan maupun teman makan utama.
+            </p>
+            <p class="fw-bold text-primary">Rp 15.000</p>
+            <button
+              class="btn btn-primary mt-auto"
+              onclick="addToCart('Dimsum Original', 15000, 'foto/WhatsApp Image 2026-01-21 at 7.53.54 AM.jpeg', this)"
+            >
+              Tambah ke Keranjang
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card menu-item h-100">
+          <img
+            src="foto/WhatsApp Image 2026-01-21 at 7.54.34 AM.jpeg"
+            class="card-img-top"
+            alt="Dimsum Udang"
+            onclick="toggleCaption(this)"
+          />
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Dimsum Mentai Bakar</h5>
+            <p class="card-text caption-hidden">Dimsum ayam lembut yang disajikan dengan saus mentai creamy dan gurih, kemudian dibakar hingga bagian atasnya harum dan sedikit kecokelatan. 
+              Perpaduan rasa gurih, creamy, dan aroma bakaran membuat menu ini semakin istimewa.</p>
+            <p class="fw-bold text-primary">Rp 35.000</p>
+            <button
+              class="btn btn-primary mt-auto"
+              onclick="addToCart('Dimsum Mentai Bakar', 35000, 'foto/WhatsApp Image 2026-01-21 at 7.54.34 AM.jpeg', this)"
+            >
+              Tambah ke Keranjang
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card menu-item h-100">
+          <img
+            src="foto/WhatsApp Image 2026-01-21 at 7.52.54 AM.jpeg"
+            class="card-img-top"
+            alt="Dimsum Udang"
+            onclick="toggleCaption(this)"
+          />
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Dimsum Mentai</h5>
+            <p class="card-text caption-hidden">Dimsum ayam dengan isian lembut dan juicy, disiram saus mentai creamy yang kaya rasa. 
+              Setiap gigitan menghadirkan sensasi gurih dan lezat yang pas untuk pecinta saus mentai.</p>
+            <p class="fw-bold text-primary">Rp 25.000</p>
+            <button
+              class="btn btn-primary mt-auto"
+              onclick="addToCart('Dimsum Mentai', 25000, 'foto/WhatsApp Image 2026-01-21 at 7.52.54 AM.jpeg', this)"
+            >
+              Tambah ke Keranjang
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Menu Drink -->
+<section id="minuman" class="py-5">
+  <div class="container">
+    <h2 class="text-center mb-5">Menu Minuman Kami</h2>
+    <div class="row" id="menu-items">
+      <!-- Contoh item -->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card menu-item h-100">
+          <img
+            src="foto/WhatsApp Image 2026-01-21 at 8.18.22 AM.jpeg"
+            class="card-img-top"
+            alt="Dimsum Ayam"
+            onclick="toggleCaption(this)"
+          />
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Es Teh Tarik</h5>
+            <p class="card-text caption-hidden">
+              Sentuhan Klasik yang Berbuih
+Perpaduan harmonis antara seduhan teh hitam pekat dan kental manis yang "ditarik" hingga menciptakan tekstur foam yang lembut di atasnya.
+            </p>
+            <p class="fw-bold text-primary">Rp 10.000</p>
+            <button
+              class="btn btn-primary mt-auto"
+              onclick="addToCart('Es Teh Tarik', 10000, 'foto/WhatsApp Image 2026-01-21 at 8.18.22 AM.jpeg', this)"
+            >
+              Tambah ke Keranjang
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card menu-item h-100">
+          <img
+            src="foto/WhatsApp Image 2026-01-21 at 8.17.31 AM.jpeg"
+            class="card-img-top"
+            alt="Dimsum Udang"
+            onclick="toggleCaption(this)"
+          />
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Es Susu Karamel</h5>
+            <p class="card-text caption-hidden">Simfoni Manis dalam Gelas
+Kelembutan susu cair segar yang bertemu dengan aliran sirup karamel emas nan mewah.</p>
+            <p class="fw-bold text-primary">Rp 10.000</p>
+            <button
+              class="btn btn-primary mt-auto"
+              onclick="addToCart('Es Susu Karamel', 10000, 'foto/WhatsApp Image 2026-01-21 at 8.17.31 AM.jpeg', this)"
+            >
+              Tambah ke Keranjang
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card menu-item h-100">
+          <img
+            src="foto/WhatsApp Image 2026-01-22 at 5.05.44 PM.jpeg"
+            class="card-img-top"
+            alt="Dimsum Udang"
+            onclick="toggleCaption(this)"
+          />
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">Es Kopi Susu</h5>
+            <p class="card-text caption-hidden">Energi dalam Balutan Tradisi
+Keseimbangan sempurna antara bold-nya biji kopi pilihan dan gurihnya susu, dipermanis dengan sentuhan gula aren cair.</p>
+            <p class="fw-bold text-primary">Rp 12.000</p>
+            <button
+              class="btn btn-primary mt-auto"
+              onclick="addToCart('Es Kopi Susu', 12000, 'foto/WhatsApp Image 2026-01-22 at 5.05.44 PM.jpeg', this)"
+            >
+              Tambah ke Keranjang
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5 bg-light">
+      <div class="container text-center">
+        <h2>Tentang Dimsum Santri</h2>
+        <p>
+          Toko Dimsum kami berdiri sejak tahun 2023 dengan komitmen menghadirkan dimsum yang lezat, higienis, dan berkualitas untuk semua kalangan. Berawal dari usaha kecil, kami terus berkembang dengan mengutamakan cita rasa, bahan pilihan, dan proses pembuatan yang terjaga kebersihannya.<br>
+Setiap porsi dimsum kami disajikan dengan <b>isi 6 pcs per porsi</b>, pas untuk dinikmati sendiri maupun dibagikan bersama keluarga dan teman. Kami menggunakan bahan-bahan segar dan bumbu pilihan agar menghasilkan rasa yang gurih, lembut, dan konsisten di setiap gigitan.<br>
+Kami percaya bahwa makanan enak tidak harus mahal. Oleh karena itu, Toko Dimsum kami hadir sebagai pilihan camilan dan makanan favorit yang terjangkau, mengenyangkan, dan memuaskan.<br>
+Terima kasih telah mempercayai kami sebagai pilihan dimsum favorit Anda. 🍽️🥟 
+        </p>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5">
+      <div class="container text-center">
+        <h2>Kontak Kami</h2>
+        <p>WhatsApp: <a href="https://wa.me/6282142319814?text=">62 821-4231-9814</a> | Instagram: <a href="https://www.instagram.com/deemsuntree?igsh=MTN1MzBvMm50amt2bA==">@deemsuntree</a></p>
+      </div>
+    </section>
+
+        <!-- Footer -->
+    <footer>
+      <div class="container text-center">
+        <p>&copy; 2023 Dimsum Santri. Semua hak dilindungi.</p>
+      </div>
+    </footer>
+
+    <!-- Keranjang (Hidden by default) -->
+    <div id="cart" class="card shake">
+      <div
+        class="card-header bg-primary text-white d-flex justify-content-between"
+      >
+        Keranjang Belanja
+        <button
+          class="btn-close btn-close-white"
+          onclick="toggleCart()"
+        ></button>
+      </div>
+      <div class="card-body">
+        <ul id="cart-items" class="list-group list-group-flush"></ul>
+        <p class="mt-3 fw-bold">Total: Rp <span id="total">0</span></p>
+        <button
+          class="btn btn-success w-100"
+          data-bs-toggle="modal"
+          data-bs-target="#checkoutModal"
+        >
+          Checkout
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal Checkout -->
+    <div class="modal fade" id="checkoutModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Detail Pemesanan</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="orderForm">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="name" class="form-label">Nama Lengkap</label>
+                  <input type="text" class="form-control" id="name" required />
+                </div>
+              <div class="mb-3">
+                <label for="address" class="form-label"
+                  >Alamat Lengkap </label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="address"
+                  placeholder="Ketik alamat Anda..."
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="notes" class="form-label"
+                  >Catatan Tambahan (Opsional)</label
+                >
+                <textarea class="form-control" id="notes" rows="2"></textarea>
+              </div>
+              <p><strong>Pesanan:</strong> <span id="order-summary"></span></p>
+              <p><strong>Total:</strong> Rp <span id="modal-total">0</span></p>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Batal
+            </button>
+            <button
+              type="button"
+              class="btn btn-success"
+              onclick="orderViaWhatsApp()"
+            >
+              Pesan via WhatsApp
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+      let cart = [];
+      let total = 0;
+
+      // Google Maps Autocomplete untuk alamat
+      function initAutocomplete() {
+        const input = document.getElementById("address");
+        
+      }
+      google.maps.event.addDomListener(window, "load");
+
+      function addToCart(name, price, imageSrc, element) {
+        let existing = cart.find(item => item.name === name);
+        if (existing) {
+          existing.quantity += 1;
+        } else {
+          cart.push({ name, price, quantity: 1, imageSrc });
+        }
+        total += price;
+        
+        // Animasi lempar item ke keranjang
+        animateItemToCart(element, name, imageSrc);
+        
+        updateCart();
+        animateCartIcon(); // Tambahkan animasi pada ikon keranjang
+      }
+
+      function updateCart() {
+  const cartItems = document.getElementById("cart-items");
+  const cartCount = document.getElementById("cart-count");
+  cartItems.innerHTML = "";
+  cart.forEach((item) => {
+    // Logika untuk mengubah gambar jika diperlukan (contoh: ganti gambar untuk item tertentu)
+    let imgSrc = item.imageSrc;
+    if (item.name === 'Dimsum Original') {
+      imgSrc = 'foto/WhatsApp Image 2026-01-21 at 7.53.54 AM.jpeg';  // Ganti dengan path gambar baru
+    }
+    // Jika ingin ganti untuk item lain, tambahkan kondisi serupa di sini
+
+    const li = document.createElement("li");
+    li.className = "list-group-item d-flex justify-content-between align-items-center";
+    li.innerHTML = `
+      <div class="d-flex align-items-center">
+        <img src="${imgSrc}" alt="${item.name}" style="width: 50px; height: 50px; margin-right: 10px; border-radius: 5px;">
+        <span>${item.name} x ${item.quantity} - Rp ${item.price * item.quantity}</span>
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="removeFromCart('${item.name}')">Hapus</button>
+    `;
+    cartItems.appendChild(li);
+  });
+  document.getElementById("total").textContent = total;
+  document.getElementById("modal-total").textContent = total;
+  document.getElementById("order-summary").textContent = cart
+    .map((item) => `${item.name} x ${item.quantity}`)
+    .join(", ");
+  cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+}
+
+      function removeFromCart(name) {
+        let item = cart.find(i => i.name === name);
+        if (item) {
+          total -= item.price;
+          item.quantity -= 1;
+          if (item.quantity <= 0) {
+            cart = cart.filter(i => i.name !== name);
+          }
+        }
+        updateCart();
+      }
+
+      function toggleCart() {
+        const cartEl = document.getElementById("cart");
+        cartEl.style.display =
+          cartEl.style.display === "block" ? "none" : "block";
+      }
+
+      function animateCartIcon() {
+        const cartIcon = document.getElementById("cart-icon"); // Asumsikan ada elemen dengan id "cart-icon"
+        if (cartIcon) {
+          cartIcon.classList.add("shake");
+          setTimeout(() => {
+            cartIcon.classList.remove("shake");
+          }, 500); // Durasi animasi 0.5 detik
+        }
+      }
+
+      // Fungsi baru untuk animasi lempar item ke keranjang
+      function animateItemToCart(element, name, imageSrc) {
+        const cartIcon = document.getElementById("cart-icon");
+        if (!cartIcon || !element) return;
+
+        // Dapatkan posisi elemen menu dan ikon keranjang
+        const elementRect = element.getBoundingClientRect();
+        const cartRect = cartIcon.getBoundingClientRect();
+
+        // Buat elemen animasi (gambar kecil item)
+        const flyingItem = document.createElement("img");
+        flyingItem.src = imageSrc;
+        flyingItem.alt = name;
+        flyingItem.style.position = "fixed";
+        flyingItem.style.top = `${elementRect.top}px`;
+        flyingItem.style.left = `${elementRect.left}px`;
+        flyingItem.style.width = `${elementRect.width}px`;
+        flyingItem.style.height = `${elementRect.height}px`;
+        flyingItem.style.borderRadius = "5px";
+        flyingItem.style.zIndex = "1000";
+        flyingItem.style.transition = "all 5s ease-in-out"; // Durasi animasi 1 detik
+        flyingItem.style.transform = "scale(1)";
+
+        // Append ke body
+        document.body.appendChild(flyingItem);
+
+        // Hitung pergeseran
+        const deltaX = cartRect.left - elementRect.left;
+        const deltaY = cartRect.top - elementRect.top;
+
+        // Paksa reflow untuk memulai transisi
+        flyingItem.offsetHeight;
+
+        // Mulai animasi: gerakkan ke posisi keranjang dan perkecil skala
+        flyingItem.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.1)`;
+
+        // Hapus elemen setelah animasi selesai
+        flyingItem.addEventListener("transitionend", () => {
+          document.body.removeChild(flyingItem);
+        });
+      }
+
+      function orderViaWhatsApp() {
+        const form = document.getElementById("orderForm");
+        if (!form.checkValidity() || cart.length === 0) {
+          alert("Lengkapi form dan keranjang!");
+          form.reportValidity();
+          return;
+        }
+        const name = document.getElementById("name").value;
+        const address = document.getElementById("address").value;
+        const notes = document.getElementById("notes").value;
+        const message = `Halo, saya ${name}  ingin memesan:\n${cart
+          .map((item) => `${item.name} x ${item.quantity} - Rp ${item.price * item.quantity}`)
+          .join("\n")}\nTotal: Rp ${total}\nAlamat: ${address}\nCatatan: ${
+          notes || "Tidak ada"
+        }`;
+        const url = `https://wa.me/6282142319814?text=${encodeURIComponent(
+          message
+        )}`; // Ganti nomor WhatsApp
+        window.open(url, "_blank");
+        bootstrap.Modal.getInstance(
+          document.getElementById("checkoutModal")
+        ).hide();
+      }
+
+        // Fungsi baru untuk toggle caption
+      function toggleCaption(imgElement) {
+        const card = imgElement.closest('.card');
+        const text = card.querySelector('.card-text');
+        text.classList.toggle('caption-hidden');
+      }
+    </script>
+  </body>
+</html>
