@@ -547,7 +547,7 @@ Terima kasih telah mempercayai kami sebagai pilihan dimsum favorit Anda. 🍽️
         const name = document.getElementById("name").value;
         const address = document.getElementById("address").value;
         const notes = document.getElementById("notes").value;
-        const message = `Halo, saya ${name}  ingin memesan:\n${cart
+        const message = `#ORDER\nHalo, saya ${name}  ingin memesan:\n${cart
           .map((item) => `${item.name} x ${item.quantity} - Rp ${item.price * item.quantity}`)
           .join("\n")}\nTotal: Rp ${total}\nAlamat: ${address}\nCatatan: ${
           notes || "Tidak ada"
@@ -570,5 +570,6 @@ Terima kasih telah mempercayai kami sebagai pilihan dimsum favorit Anda. 🍽️
     </script>
   </body>
 </html>
+
 
 
